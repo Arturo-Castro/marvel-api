@@ -26,6 +26,9 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
+builder.Logging.ClearProviders();
+builder.Logging.AddLog4Net();
+
 builder.Services
     .AddScoped<IMarvelService, MarvelService>()
     .AddScoped<ICharacterService, CharacterService>();

@@ -8,6 +8,7 @@ namespace Marvel.Api.Controllers
     public class AvengersController : ControllerBase
     {        
         private readonly IMarvelService _marvelService;
+        private readonly log4net.ILog _logger = log4net.LogManager.GetLogger(typeof(AvengersController));
 
         public AvengersController(IMarvelService marvelService)
         {
@@ -16,17 +17,26 @@ namespace Marvel.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetCharactersFromNamePart([FromQuery] string nameStartsWith)
-        {    
-            if(nameStartsWith.Length < 4 || string.IsNullOrEmpty(nameStartsWith))
+        {
+            try
             {
-                return BadRequest("Name cannot have less than 4 letters or be null");
+                if (nameStartsWith.Length < 4 || string.IsNullOrEmpty(nameStartsWith))
+                {
+                    return BadRequest("Name cannot have less than 4 letters or be null");
+                }
+                var response = await _marvelService.GetCharactersFromNamePart(nameStartsWith);
+                if (!response.Any())
+                {
+                    return NotFound("No characters were found matching the criteria");
+                }
+                return Ok(response);
             }
-            var response = await _marvelService.GetCharactersFromNamePart(nameStartsWith);
-            if (!response.Any())
+            catch (Exception e)
             {
-                return NotFound("No characters were found matching the criteria");
+                _logger.Error(e);
+                return NotFound();
             }
-            return Ok(response);
+            
         }
     }
 }
