@@ -1,7 +1,10 @@
+using MarvelApp.Application.Automapper;
 using MarvelApp.Application.Interfaces;
 using MarvelApp.Application.Interfaces.ApiRestServices;
 using MarvelApp.Application.Services;
 using MarvelApp.Infrastructure;
+using MarvelApp.Infrastructure.Interfaces;
+using MarvelApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
@@ -21,8 +24,14 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
+
 builder.Services
-    .AddScoped<IMarvelService, MarvelService>();    
+    .AddScoped<IMarvelService, MarvelService>()
+    .AddScoped<ICharacterService, CharacterService>();
+
+builder.Services
+    .AddScoped<ICharacterRepository, CharacterRepository>();
 
 var app = builder.Build();
 

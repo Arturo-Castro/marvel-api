@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MarvelApp.Domain\MarvelApp.Domain.csproj" />
   </ItemGroup>
 
