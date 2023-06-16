@@ -29,6 +29,10 @@ namespace MarvelApp.Application.Services
             string ts = DateTime.Now.Ticks.ToString();
             string hash = GetMd5Hash(ts + privateKey + apiKey);
             var marvelApiResponse = await _marvelApiRestService.GetAllCharactersAsync(nameStartsWith, apiKey, hash, ts);
+            if(marvelApiResponse.Data.Results.Count == 0)
+            {
+                return marvelApiResponse.Data.Results;
+            }
             return FilterCharactersByAvengersSeries(marvelApiResponse.Data.Results);                                     
         }
 
