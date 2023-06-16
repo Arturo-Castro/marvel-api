@@ -19,6 +19,10 @@ namespace MarvelApp.Application.Services
         public async Task<IEnumerable<CharacterBaseDTO>> GetAllCharacters()
         {
             var result = await _characterRepository.GetAllCharacters();
+            if(!result.Any())
+            {
+                return Enumerable.Empty<CharacterBaseDTO>();
+            }
             var response = _mapper.Map<IEnumerable<CharacterBaseDTO>>(result);
             return response;
         }
@@ -26,6 +30,10 @@ namespace MarvelApp.Application.Services
         public async Task<CharacterDetailDTO> GetCharacterById(int characterId)
         {
             var result = await _characterRepository.GetCharacterById(characterId);
+            if(result == null)
+            {
+                return null;
+            }
             var response = _mapper.Map<CharacterDetailDTO>(result);
             return response;
         }
