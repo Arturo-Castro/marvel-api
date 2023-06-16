@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarvelApp.Application.Interfaces;
 using MarvelApp.Domain.Dtos.Character;
+using MarvelApp.Domain.Entities;
 using MarvelApp.Infrastructure.Interfaces;
 
 namespace MarvelApp.Application.Services
@@ -36,6 +37,13 @@ namespace MarvelApp.Application.Services
             }
             var response = _mapper.Map<CharacterDetailDTO>(result);
             return response;
+        }
+
+        public async Task<(CreateCharacterDTO, int)> CreateCharacter(CreateCharacterDTO createCharacterDTO)
+        {
+            var characterEntity = _mapper.Map<Character>(createCharacterDTO);
+            var result = await _characterRepository.CreateCharacter(characterEntity);
+            return (_mapper.Map<CreateCharacterDTO>(result), result.Id);
         }
     }
 }

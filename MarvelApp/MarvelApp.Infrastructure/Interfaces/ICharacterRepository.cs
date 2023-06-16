@@ -6,5 +6,6 @@ namespace MarvelApp.Infrastructure.Interfaces
     {
         Task<IEnumerable<Character>> GetAllCharacters();
         Task<Character> GetCharacterById(int characterId);
+        Task<Character> CreateCharacter(Character character);
     }
 }

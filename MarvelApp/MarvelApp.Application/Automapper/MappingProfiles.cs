@@ -14,6 +14,8 @@ namespace MarvelApp.Application.Automapper
                 .ForMember(dest => dest.RescueTeam,
                     opt => opt.MapFrom(src => src.RescueTeam));
             CreateMap<RescueTeam, RescueTeamBaseDTO>();
+            CreateMap<CreateCharacterDTO, Character>();
+            CreateMap<Character, CreateCharacterDTO>();
         }
     }
 }

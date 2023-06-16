@@ -12,7 +12,7 @@ namespace MarvelApp.Infrastructure.Repositories
         {
             _context = context;
         }
-
+        
         public async Task<IEnumerable<Character>> GetAllCharacters()
         {
             var result = await _context.Characters
@@ -28,5 +28,14 @@ namespace MarvelApp.Infrastructure.Repositories
             .FirstOrDefaultAsync(c => c.Id == characterId && c.DeletedAt == null);
             return result;         
         }
+
+        public async Task<Character> CreateCharacter(Character character)
+        {
+            character.CreatedAt = DateTime.Now;
+            await _context.Characters.AddAsync(character);
+            await _context.SaveChangesAsync();
+            return character;
+        }
+
     }
 }

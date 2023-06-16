@@ -1,4 +1,5 @@
 ﻿using MarvelApp.Application.Interfaces;
+using MarvelApp.Domain.Dtos.Character;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,8 +58,22 @@ namespace Marvel.Api.Controllers
             {
                 _logger.Error(e);
                 return NotFound();
+            }            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCharacter([FromBody] CreateCharacterDTO createCharacterDTO)
+        {
+            try
+            {                                                
+                var (createdCharacterDto, id) = await _characterService.CreateCharacter(createCharacterDTO);
+                return CreatedAtAction(nameof(GetCharacterById), new { characterId = id }, createdCharacterDto);
             }
-            
+            catch(Exception e)
+            {
+                _logger.Error(e);
+                return NotFound();
+            }
         }
     }
 }

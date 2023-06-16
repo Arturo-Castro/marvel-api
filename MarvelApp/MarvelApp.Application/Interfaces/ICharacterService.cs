@@ -6,5 +6,6 @@ namespace MarvelApp.Application.Interfaces
     {
         Task<IEnumerable<CharacterBaseDTO>> GetAllCharacters();
         Task<CharacterDetailDTO> GetCharacterById(int characterId);
+        Task<(CreateCharacterDTO, int)> CreateCharacter(CreateCharacterDTO createCharacterDTO);
     }
 }
