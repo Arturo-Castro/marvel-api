@@ -1,3 +1,9 @@
+using MarvelApp.Application.Interfaces;
+using MarvelApp.Application.Interfaces.ApiRestServices;
+using MarvelApp.Application.Services;
+
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddRouting(routing => routing.LowercaseUrls = true);
+
+builder.Services
+    .AddScoped<IMarvelService, MarvelService>();    
 
 var app = builder.Build();
 
