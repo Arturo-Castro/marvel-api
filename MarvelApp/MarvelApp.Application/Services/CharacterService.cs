@@ -10,11 +10,13 @@ namespace MarvelApp.Application.Services
     {
         private readonly ICharacterRepository _characterRepository;
         private readonly IMapper _mapper;
+        private readonly IRescueTeamRepository _rescueTeamRepository;
 
-        public CharacterService(ICharacterRepository characterRepository, IMapper mapper)
+        public CharacterService(ICharacterRepository characterRepository, IMapper mapper, IRescueTeamRepository rescueTeamRepository)
         {
             _characterRepository = characterRepository;
             _mapper = mapper;
+            _rescueTeamRepository = rescueTeamRepository;
         }
 
         public async Task<IEnumerable<CharacterBaseDTO>> GetAllCharacters()
@@ -69,6 +71,26 @@ namespace MarvelApp.Application.Services
             }
             character.RescueTeamId = null;
             await _characterRepository.DeleteCharacter(character);
+
+            return true;
+        }
+
+        public async Task<bool> AssignCharacterToATeam(int characterId, int rescueTeamId)
+        {
+            var character = await _characterRepository.GetCharacterById(characterId);
+            if (character == null)
+            {
+                return false;
+            }
+
+            var rescueTeam = await _rescueTeamRepository.GetRescueTeamById(rescueTeamId);
+            if (rescueTeam == null)
+            {
+                return false;
+            }
+
+            character.RescueTeamId = rescueTeamId;
+            await _characterRepository.AssignCharacterToATeam(character);
 
             return true;
         }

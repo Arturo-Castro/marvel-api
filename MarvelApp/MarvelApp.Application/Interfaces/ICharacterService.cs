@@ -9,5 +9,6 @@ namespace MarvelApp.Application.Interfaces
         Task<(CreateCharacterDTO, int)> CreateCharacter(CreateCharacterDTO createCharacterDTO);
         Task<bool> EditCharactersAttributes(EditCharacterBaseDTO characterDTO, int characterId);
         Task<bool> DeleteCharacter(int characterId);
+        Task<bool> AssignCharacterToATeam(int characterId, int RescueTeamId);
     }
 }

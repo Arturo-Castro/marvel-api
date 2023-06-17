@@ -124,5 +124,30 @@ namespace Marvel.Api.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPut("{characterId}/rescue-teams")]
+        public async Task<IActionResult> AssignCharacterToAnotherTeam([FromRoute] int characterId, [FromQuery] int rescueTeamId)
+        {            
+            try
+            {
+                if (characterId <= 0 || rescueTeamId <= 0)
+                {
+                    return BadRequest("Id cannot be less than or equal to 0");
+                }
+
+                var success = await _characterService.AssignCharacterToATeam(characterId, rescueTeamId);
+                if (!success)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                this._logger.Error(e);
+                return NotFound();
+            }
+        }
     }
 }

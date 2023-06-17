@@ -43,5 +43,12 @@ namespace MarvelApp.Infrastructure.Repositories
         {
             return await _context.RescueTeams.AnyAsync(t => t.Name == name);
         }
+
+        public async Task EditRescueTeamName(RescueTeam rescueTeam)
+        {
+            rescueTeam.UpdatedAt = DateTime.Now;
+            _context.RescueTeams.Update(rescueTeam);
+            await _context.SaveChangesAsync();
+        }
     }
 }

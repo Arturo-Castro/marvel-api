@@ -50,5 +50,12 @@ namespace MarvelApp.Infrastructure.Repositories
             character.DeletedAt = DateTime.Now;
             await _context.SaveChangesAsync();
         }
+
+        public async Task AssignCharacterToATeam(Character character)
+        {
+            character.UpdatedAt = DateTime.Now;
+            _context.Characters.Update(character);
+            await _context.SaveChangesAsync();
+        }
     }
 }

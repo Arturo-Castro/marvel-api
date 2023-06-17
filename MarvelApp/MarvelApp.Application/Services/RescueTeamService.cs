@@ -72,5 +72,18 @@ namespace MarvelApp.Application.Services
             var result = await _rescueTeamRepository.CreateRescueTeam(rescueTeamEntity);
             return (_mapper.Map<CreateRescueTeamDTO>(result), result.Id, Enums.TeamCreationError.None);
         }
+
+        public async Task<bool> EditRescueTeamName(int rescueTeamId, string newTeamName)
+        {
+            var rescueTeam = await _rescueTeamRepository.GetRescueTeamById(rescueTeamId);
+            if (rescueTeam == null)
+            {
+                return false;
+            }
+            rescueTeam.Name = newTeamName;
+            await _rescueTeamRepository.EditRescueTeamName(rescueTeam);
+
+            return true;
+        }
     }
 }

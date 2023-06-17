@@ -79,5 +79,30 @@ namespace Marvel.Api.Controllers
 
             return CreatedAtAction(nameof(GetRescueTeamById), new { rescueTeamId = id }, createRescueTeamDTO);
         }
+
+        [HttpPut("{rescueTeamId}")]
+        public async Task<IActionResult> EditRescueTeamName([FromRoute] int rescueTeamId, [FromQuery] string newTeamName)
+        {            
+            try
+            {
+                if (rescueTeamId <= 0)
+                {
+                    return BadRequest("Id cannot be less than or equal to 0");
+                }
+
+                var success = await _rescueTeamService.EditRescueTeamName(rescueTeamId, newTeamName);
+                if (!success)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return NotFound();
+            }
+        }
     }
 }
