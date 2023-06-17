@@ -1,4 +1,6 @@
 ﻿using MarvelApp.Application.Interfaces;
+using MarvelApp.Domain;
+using MarvelApp.Domain.Dtos.RescueTeam;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +58,26 @@ namespace Marvel.Api.Controllers
                 this._logger.Error(e);
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRescueTeam([FromBody] CreateRescueTeamDTO createRescueTeamDTO)
+        {
+            var (rescueTeam, id, errorCode) = await _rescueTeamService.CreateRescueTeam(createRescueTeamDTO);
+            if (errorCode == Enums.TeamCreationError.CharacterNotFound)
+            {
+                return NotFound("No characters were found to assign as leader of the team");                
+            }
+            else if (errorCode == Enums.TeamCreationError.CharacterAlreadyHasTeam)
+            {
+                return BadRequest("That character already has a team assigned");
+            }
+            else if (errorCode == Enums.TeamCreationError.TeamAlreadyExists)
+            {
+                return BadRequest("That team already exists");
+            }
+
+            return CreatedAtAction(nameof(GetRescueTeamById), new { rescueTeamId = id }, createRescueTeamDTO);
         }
     }
 }

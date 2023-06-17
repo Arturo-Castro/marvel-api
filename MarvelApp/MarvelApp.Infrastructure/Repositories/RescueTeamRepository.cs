@@ -30,5 +30,18 @@ namespace MarvelApp.Infrastructure.Repositories
                 .FirstOrDefaultAsync(rt => rt.Id == rescueTeamId && rt.DeletedAt == null);                
             return result;
         }
+
+        public async Task<RescueTeam> CreateRescueTeam(RescueTeam rescueTeam)
+        {
+            rescueTeam.CreatedAt = DateTime.Now;
+            await _context.RescueTeams.AddAsync(rescueTeam);
+            await _context.SaveChangesAsync();
+            return rescueTeam;
+        }
+
+        public async Task<bool> RescueTeamExists(string name)
+        {
+            return await _context.RescueTeams.AnyAsync(t => t.Name == name);
+        }
     }
 }

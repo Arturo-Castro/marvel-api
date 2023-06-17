@@ -20,6 +20,8 @@ namespace MarvelApp.Application.Automapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.RescueTeamId, opt => opt.Ignore());
             CreateMap<RescueTeam, RescueTeamDetailDTO>();
+            CreateMap<CreateRescueTeamDTO, RescueTeam>();
+            CreateMap<RescueTeam, CreateRescueTeamDTO>();
         }
     }
 }

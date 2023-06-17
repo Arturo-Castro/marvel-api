@@ -13,6 +13,6 @@ namespace MarvelApp.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public ICollection<Character> Characters { get; set; } = null!;
+        public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }

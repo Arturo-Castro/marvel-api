@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MarvelApp.Application.Interfaces;
+using MarvelApp.Domain;
 using MarvelApp.Domain.Dtos.RescueTeam;
+using MarvelApp.Domain.Entities;
 using MarvelApp.Infrastructure.Interfaces;
 
 namespace MarvelApp.Application.Services
@@ -9,11 +11,13 @@ namespace MarvelApp.Application.Services
     {
         private readonly IRescueTeamRepository _rescueTeamRepository;
         private readonly IMapper _mapper;
+        private readonly ICharacterRepository _characterRepository;
 
-        public RescueTeamService(IRescueTeamRepository rescueTeamRepository, IMapper mapper)
+        public RescueTeamService(IRescueTeamRepository rescueTeamRepository, IMapper mapper, ICharacterRepository characterRepository)
         {
             _rescueTeamRepository = rescueTeamRepository;
             _mapper = mapper;
+            _characterRepository = characterRepository;
         }
 
         public async Task<IEnumerable<RescueTeamStatisticsDTO>> GetAllRescueTeamsStatistics()
@@ -43,6 +47,30 @@ namespace MarvelApp.Application.Services
                 return null;
             }
             return _mapper.Map<RescueTeamDetailDTO>(result);
+        }
+
+        public async Task<(CreateRescueTeamDTO, int, Enums.TeamCreationError)> CreateRescueTeam(CreateRescueTeamDTO createRescueTeamDTO)
+        {
+            var character = await _characterRepository.GetCharacterById(createRescueTeamDTO.CharacterId);
+            if (character == null)
+            {
+                return (null, 0, Enums.TeamCreationError.CharacterNotFound);
+            }
+            else if (character.RescueTeam != null)
+            {
+                return (null, 0, Enums.TeamCreationError.CharacterAlreadyHasTeam);
+            }
+
+            var rescueTeamExists = await _rescueTeamRepository.RescueTeamExists(createRescueTeamDTO.Name);
+            if (rescueTeamExists)
+            {
+                return (null, 0, Enums.TeamCreationError.TeamAlreadyExists);
+            }
+
+            var rescueTeamEntity = _mapper.Map<RescueTeam>(createRescueTeamDTO);
+            rescueTeamEntity.Characters.Add(character);
+            var result = await _rescueTeamRepository.CreateRescueTeam(rescueTeamEntity);
+            return (_mapper.Map<CreateRescueTeamDTO>(result), result.Id, Enums.TeamCreationError.None);
         }
     }
 }
