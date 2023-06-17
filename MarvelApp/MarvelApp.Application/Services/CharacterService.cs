@@ -58,6 +58,19 @@ namespace MarvelApp.Application.Services
 
             return true;
 
-        }        
+        }
+
+        public async Task<bool> DeleteCharacter(int characterId)
+        {
+            var character = await _characterRepository.GetCharacterById(characterId);
+            if (character == null)
+            {
+                return false;
+            }
+            character.RescueTeamId = null;
+            await _characterRepository.DeleteCharacter(character);
+
+            return true;
+        }
     }
 }

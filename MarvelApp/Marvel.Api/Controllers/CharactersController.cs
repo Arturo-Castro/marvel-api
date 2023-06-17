@@ -38,8 +38,7 @@ namespace Marvel.Api.Controllers
             {
                 this._logger.Error(e);
                 return NotFound();
-            }
-            
+            }            
         }
 
         [HttpGet]
@@ -81,6 +80,11 @@ namespace Marvel.Api.Controllers
         {
             try
             {
+                if (characterId <= 0)
+                {
+                    return BadRequest("Id cannot be less than or equal to 0");
+                }
+
                 var success = await _characterService.EditCharactersAttributes(characterDTO, characterId);
                 if (!success)
                 {
@@ -94,6 +98,31 @@ namespace Marvel.Api.Controllers
                 _logger.Error(e);
                 return NotFound();
             }            
+        }
+
+        [HttpDelete("{characterId}")]
+        public async Task<IActionResult> DeleteCharacter([FromRoute] int characterId)
+        {
+            try
+            {
+                if (characterId <= 0)
+                {
+                    return BadRequest("Id cannot be less than or equal to 0");
+                }
+
+                var success = await _characterService.DeleteCharacter(characterId);
+                if (!success)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                this._logger.Error(e);
+                return NotFound();
+            }
         }
     }
 }
