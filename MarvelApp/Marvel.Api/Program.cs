@@ -31,10 +31,12 @@ builder.Logging.AddLog4Net();
 
 builder.Services
     .AddScoped<IMarvelService, MarvelService>()
-    .AddScoped<ICharacterService, CharacterService>();
+    .AddScoped<ICharacterService, CharacterService>()
+    .AddScoped<IRescueTeamService, RescueTeamService>();
 
 builder.Services
-    .AddScoped<ICharacterRepository, CharacterRepository>();
+    .AddScoped<ICharacterRepository, CharacterRepository>()
+    .AddScoped<IRescueTeamRepository, RescueTeamRepository>();
 
 var app = builder.Build();
 

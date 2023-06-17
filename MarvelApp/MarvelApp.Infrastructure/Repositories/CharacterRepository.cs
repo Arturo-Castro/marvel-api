@@ -24,8 +24,9 @@ namespace MarvelApp.Infrastructure.Repositories
 
         public async Task<Character> GetCharacterById(int characterId)
         {
-            var result = await _context.Characters.Include(rt => rt.RescueTeam)
-            .FirstOrDefaultAsync(c => c.Id == characterId && c.DeletedAt == null);
+            var result = await _context.Characters
+                .Include(rt => rt.RescueTeam)
+                .FirstOrDefaultAsync(c => c.Id == characterId && c.DeletedAt == null);
             return result;         
         }
 
