@@ -16,9 +16,23 @@ namespace MarvelApp.Application.Services
             _mapper = mapper;
         }
 
-        public Task<RescueTeamStatisticsDTO> GetAllRescueTeamsStatistics()
+        public async Task<IEnumerable<RescueTeamStatisticsDTO>> GetAllRescueTeamsStatistics()
         {
-            throw new NotImplementedException();
+            var result = await _rescueTeamRepository.GetAllRescueTeams();
+            if(!result.Any())
+            {
+                return Enumerable.Empty<RescueTeamStatisticsDTO>();
+            }
+            var rescueTeamStatisticDTO = result                
+                .Select(t => new RescueTeamStatisticsDTO
+                {
+                    Name = t.Name,
+                    MembersCount = t.Characters.Count,
+                    StrongestMember = t.Characters.OrderByDescending(m => m.Strength).FirstOrDefault()?.Name,
+                    SmartestMember = t.Characters.OrderByDescending(m => m.Intelligence).FirstOrDefault()?.Name,
+                    FastestMember = t.Characters.OrderByDescending(m => m.Speed).FirstOrDefault()?.Name
+                });
+            return rescueTeamStatisticDTO;
         }
 
         public async Task<RescueTeamDetailDTO> GetRescueTeamById(int rescueTeamId)

@@ -16,8 +16,9 @@ namespace MarvelApp.Infrastructure.Repositories
         public async Task<IEnumerable<RescueTeam>> GetAllRescueTeams()
         {
             var result = await _context.RescueTeams
-                .Where(c => c.DeletedAt == null)
-                .OrderBy(c => c.Name)
+                .Where(rt => rt.DeletedAt == null)
+                .Include(rt => rt.Characters)
+                .OrderBy(rt => rt.Name)
                 .ToListAsync();
             return result;
         }
