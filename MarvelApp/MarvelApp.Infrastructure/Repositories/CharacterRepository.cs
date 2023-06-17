@@ -37,5 +37,11 @@ namespace MarvelApp.Infrastructure.Repositories
             return character;
         }
 
+        public async Task EditCharactersAttributes(Character character)
+        {
+            character.UpdatedAt = DateTime.Now;
+            _context.Characters.Update(character);
+            await _context.SaveChangesAsync();
+        }
     }
 }

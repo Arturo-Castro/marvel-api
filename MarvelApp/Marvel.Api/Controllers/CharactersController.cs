@@ -75,5 +75,25 @@ namespace Marvel.Api.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPut("{characterId}")]
+        public async Task<IActionResult> EditCharactersAttributes([FromRoute] int characterId, [FromBody] EditCharacterBaseDTO characterDTO)
+        {
+            try
+            {
+                var success = await _characterService.EditCharactersAttributes(characterDTO, characterId);
+                if (!success)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return NotFound();
+            }            
+        }
     }
 }

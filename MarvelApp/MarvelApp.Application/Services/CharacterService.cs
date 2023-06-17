@@ -45,5 +45,19 @@ namespace MarvelApp.Application.Services
             var result = await _characterRepository.CreateCharacter(characterEntity);
             return (_mapper.Map<CreateCharacterDTO>(result), result.Id);
         }
+
+        public async Task<bool> EditCharactersAttributes(EditCharacterBaseDTO characterDTO, int characterId)
+        {
+            var character = await _characterRepository.GetCharacterById(characterId);
+            if(character == null)
+            {
+                return false;
+            }
+            _mapper.Map(characterDTO, character);
+            await _characterRepository.EditCharactersAttributes(character);
+
+            return true;
+
+        }        
     }
 }
