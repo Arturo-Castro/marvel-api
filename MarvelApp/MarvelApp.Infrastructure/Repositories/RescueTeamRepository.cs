@@ -50,5 +50,11 @@ namespace MarvelApp.Infrastructure.Repositories
             _context.RescueTeams.Update(rescueTeam);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteRescueTeam(RescueTeam rescueTeam)
+        {
+            rescueTeam.DeletedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+        }
     }
 }

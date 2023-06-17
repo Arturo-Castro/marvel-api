@@ -9,5 +9,6 @@ namespace MarvelApp.Application.Interfaces
         Task<IEnumerable<RescueTeamStatisticsDTO>> GetAllRescueTeamsStatistics();
         Task<(CreateRescueTeamDTO, int, Enums.TeamCreationError)> CreateRescueTeam(CreateRescueTeamDTO createRescueTeamDTO);
         Task<bool> EditRescueTeamName(int rescueTeamId, string newTeamName);
+        Task<bool> DeleteRescueTeam(int rescueTeamId);
     }
 }

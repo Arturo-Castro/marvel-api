@@ -9,5 +9,6 @@ namespace MarvelApp.Infrastructure.Interfaces
         Task<RescueTeam> CreateRescueTeam(RescueTeam rescueTeam);
         Task<bool> RescueTeamExists(string name);
         Task EditRescueTeamName(RescueTeam rescueTeam);
+        Task DeleteRescueTeam(RescueTeam rescueTeam);
     }
 }

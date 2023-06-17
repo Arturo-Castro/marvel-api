@@ -104,5 +104,30 @@ namespace Marvel.Api.Controllers
                 return NotFound();
             }
         }
+
+        [HttpDelete("{rescueTeamId}")]
+        public async Task<IActionResult> DeleteRescueTeam([FromRoute] int rescueTeamId)
+        {
+            try
+            {
+                if (rescueTeamId <= 0)
+                {
+                    return BadRequest("Id cannot be less than or equal to 0");
+                }
+
+                var success = await _rescueTeamService.DeleteRescueTeam(rescueTeamId);
+                if (!success)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                this._logger.Error(e);
+                return NotFound();
+            }
+        }
     }
 }
