@@ -1,7 +1,9 @@
 ﻿using MarvelApp.Application.Interfaces;
 using MarvelApp.Application.Interfaces.ApiRestServices;
 using MarvelApp.Domain.Dtos;
+using MarvelApp.Domain.Dtos.MarvelApiRestService;
 using Microsoft.Extensions.Configuration;
+using IronPdf;
 using Refit;
 using System.Security.Cryptography;
 using System.Text;
@@ -36,7 +38,24 @@ namespace MarvelApp.Application.Services
             return FilterCharactersByAvengersSeries(marvelApiResponse.Data.Results);                                     
         }
 
-        
+        public async Task<byte[]> GenerateThanosInfoPdf()
+        {
+            string ts = DateTime.Now.Ticks.ToString();
+            string hash = GetMd5Hash(ts + privateKey + apiKey);
+            var thanosCharacterResponse = await _marvelApiRestService.GetThanosCharacter(apiKey, hash, ts);
+            var thanosComicsResponse = await _marvelApiRestService.GetThanosCharacterStories(apiKey, hash, ts);
+            List<ThanosComicsItemDTO> thanosLastFiveComics = thanosComicsResponse.Data.Results[0].Comics.Items.TakeLast(5).ToList();
+            string htmlContent = GenerateHtmlContent(thanosCharacterResponse.Data.Results[0], thanosLastFiveComics);
+
+            var renderer = new HtmlToPdf();
+            var pdf = await renderer.RenderHtmlAsPdfAsync(htmlContent);
+
+            return pdf.BinaryData;
+
+
+        }
+
+
         #region Private methods
 
         private string GetMd5Hash(string input)
@@ -59,6 +78,39 @@ namespace MarvelApp.Application.Services
             return characters.Where(x => x.Series.Items.Any(s => s.Name.Contains("Avengers"))).ToList();
         }
 
+        private static string GenerateHtmlContent(ThanosCharacterDTO thanosCharacter, List<ThanosComicsItemDTO> thanosLastFiveComics)
+        {
+            string characterName = thanosCharacter.Name;
+            string characterDescription = thanosCharacter.Description;
+            string characterThumbnailUrl = thanosCharacter.Thumbnail.GetImageUrl();
+
+            StringBuilder htmlBuilder = new StringBuilder();
+            htmlBuilder.AppendLine("<html>");
+            htmlBuilder.AppendLine("<head>");
+            htmlBuilder.AppendLine("<title>Thanos Character Information</title>");
+            htmlBuilder.AppendLine("</head>");
+            htmlBuilder.AppendLine("<body>");
+            htmlBuilder.AppendLine("<h1>Thanos Character Information</h1>");
+            htmlBuilder.AppendLine("<div>");
+            htmlBuilder.AppendLine($"<img src=\"{characterThumbnailUrl}\" alt=\"{characterName} Thumbnail\"/>");
+            htmlBuilder.AppendLine($"<h2>{characterName}</h2>");
+            htmlBuilder.AppendLine($"<p>{characterDescription}</p>");
+            htmlBuilder.AppendLine("</div>");
+            htmlBuilder.AppendLine("<h2>Comics</h2>");
+            htmlBuilder.AppendLine("<ul>");
+
+            foreach (var comic in thanosLastFiveComics)
+            {
+                string comicResourceURI = comic.Name;
+                htmlBuilder.AppendLine($"<li>{comicResourceURI}</li>");
+            }
+
+            htmlBuilder.AppendLine("</ul>");
+
+            htmlBuilder.AppendLine("</body>");
+            htmlBuilder.AppendLine("</html>");
+            return htmlBuilder.ToString();
+        }
 
         #endregion
     }
