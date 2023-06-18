@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MockData\" />
     <Folder Include="Systems\Repositories\" />
     <Folder Include="Systems\Services\" />
   </ItemGroup>

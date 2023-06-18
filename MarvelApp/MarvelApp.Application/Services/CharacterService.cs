@@ -30,7 +30,7 @@ namespace MarvelApp.Application.Services
             return response;
         }
 
-        public async Task<CharacterDetailDTO> GetCharacterById(int characterId)
+        public async Task<CharacterDetailDTO?> GetCharacterById(int characterId)
         {
             var result = await _characterRepository.GetCharacterById(characterId);
             if(result == null)
