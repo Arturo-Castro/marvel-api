@@ -35,8 +35,22 @@ namespace Marvel.Api.Controllers
             {
                 _logger.Error(e);
                 return NotFound();
+            }            
+        }
+
+        [HttpGet("thanos/pdf")]
+        public async Task<IActionResult> GetThanosInfoPdf()
+        {
+            try
+            {
+                byte[] pdfData = await _marvelService.GenerateThanosInfoPdf();
+                return File(pdfData, "application/pdf", "thanos_report.pdf");
+            }            
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return NotFound();
             }
-            
         }
     }
 }
