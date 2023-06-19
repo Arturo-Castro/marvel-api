@@ -173,7 +173,7 @@ namespace MarvelApp.TestApi.Systems.Repositories
             result.RescueTeamId.Should().Be(newTeamId);
             result.UpdatedAt.Should().BeCloseTo(DateTime.Now, precision: TimeSpan.FromSeconds(1));
         }
-
+        
 
         public void Dispose()
         {
