@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelApp.Application", "Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelApp.Domain", "MarvelApp.Domain\MarvelApp.Domain.csproj", "{DE718DE2-E59D-42DD-9457-AFA18A597799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarvelApp.Infrastructure", "MarvelApp.Infrastructure\MarvelApp.Infrastructure.csproj", "{9B0B70CF-594E-4BC2-87BA-649C8767BB32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelApp.Infrastructure", "MarvelApp.Infrastructure\MarvelApp.Infrastructure.csproj", "{9B0B70CF-594E-4BC2-87BA-649C8767BB32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarvelApp.TestApi", "MarvelApp.TestApi\MarvelApp.TestApi.csproj", "{B0184FAC-44CA-4BDA-B627-FD688CD831A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9B0B70CF-594E-4BC2-87BA-649C8767BB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B0B70CF-594E-4BC2-87BA-649C8767BB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B0B70CF-594E-4BC2-87BA-649C8767BB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0184FAC-44CA-4BDA-B627-FD688CD831A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0184FAC-44CA-4BDA-B627-FD688CD831A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0184FAC-44CA-4BDA-B627-FD688CD831A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0184FAC-44CA-4BDA-B627-FD688CD831A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

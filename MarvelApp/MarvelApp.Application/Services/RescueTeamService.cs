@@ -39,7 +39,7 @@ namespace MarvelApp.Application.Services
             return rescueTeamStatisticDTO;
         }
 
-        public async Task<RescueTeamDetailDTO> GetRescueTeamById(int rescueTeamId)
+        public async Task<RescueTeamDetailDTO?> GetRescueTeamById(int rescueTeamId)
         {
             var result = await _rescueTeamRepository.GetRescueTeamById(rescueTeamId);
             if (result == null)
@@ -49,7 +49,7 @@ namespace MarvelApp.Application.Services
             return _mapper.Map<RescueTeamDetailDTO>(result);
         }
 
-        public async Task<(CreateRescueTeamDTO, int, Enums.TeamCreationError)> CreateRescueTeam(CreateRescueTeamDTO createRescueTeamDTO)
+        public async Task<(CreateRescueTeamDTO?, int, Enums.TeamCreationError)> CreateRescueTeam(CreateRescueTeamDTO createRescueTeamDTO)
         {
             var character = await _characterRepository.GetCharacterById(createRescueTeamDTO.CharacterId);
             if (character == null)
