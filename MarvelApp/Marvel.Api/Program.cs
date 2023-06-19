@@ -6,6 +6,7 @@ using MarvelApp.Infrastructure;
 using MarvelApp.Infrastructure.Interfaces;
 using MarvelApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 
 DotNetEnv.Env.Load();
 
@@ -37,6 +38,14 @@ builder.Services
 builder.Services
     .AddScoped<ICharacterRepository, CharacterRepository>()
     .AddScoped<IRescueTeamRepository, RescueTeamRepository>();
+
+builder.Services.AddScoped<IMarvelApiRestService>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var urlMarvelApi = configuration.GetSection("Urls:MarvelApi").Value ?? throw new Exception("Marvel api URL does not exist");
+
+    return RestService.For<IMarvelApiRestService>(urlMarvelApi);
+});
 
 var app = builder.Build();
 

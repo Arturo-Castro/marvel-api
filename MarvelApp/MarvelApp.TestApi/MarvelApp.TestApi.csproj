@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Systems\Repositories\" />
-    <Folder Include="Systems\Services\" />
   </ItemGroup>
 
   <ItemGroup>

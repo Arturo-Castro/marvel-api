@@ -18,10 +18,11 @@ namespace MarvelApp.Application.Services
         private readonly string apiKey;
         private readonly string privateKey;
 
-        public MarvelService(IConfiguration configuration)
+        public MarvelService(IConfiguration configuration, IMarvelApiRestService marvelApiRestService)
         {
             urlMarvelApi = configuration.GetSection("Urls:MarvelApi").Value ?? throw new Exception("Marvel api URL does not exist");
-            _marvelApiRestService = RestService.For<IMarvelApiRestService>(urlMarvelApi);
+            _marvelApiRestService = marvelApiRestService;
+            //_marvelApiRestService = RestService.For<IMarvelApiRestService>(urlMarvelApi);
             apiKey = Environment.GetEnvironmentVariable("PUBLIC_KEY") ?? throw new Exception("The public key does not exist");
             privateKey = Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? throw new Exception("The private key does not exist");
         }
@@ -51,8 +52,6 @@ namespace MarvelApp.Application.Services
             var pdf = await renderer.RenderHtmlAsPdfAsync(htmlContent);
 
             return pdf.BinaryData;
-
-
         }
 
 
