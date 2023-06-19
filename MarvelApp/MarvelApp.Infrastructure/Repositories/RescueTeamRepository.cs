@@ -23,7 +23,7 @@ namespace MarvelApp.Infrastructure.Repositories
             return result;
         }
 
-        public async Task<RescueTeam> GetRescueTeamById(int rescueTeamId)
+        public async Task<RescueTeam?> GetRescueTeamById(int rescueTeamId)
         {
             var result = await _context.RescueTeams
                 .Include(rt => rt.Characters)
