@@ -24,4 +24,5 @@ Code coverage: 89.2%
 - Clone project
 - Rename .env-copy to .env
 - Replace values from .env with your keys from marvel api docs, and change path for logs
-- Run migrations
+- Replace "DefaultConnection" value in "ConnectionStrings" inside appsettings.Development.json
+- Run migrations from package manager console `Update-Database`
